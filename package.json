@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "hbs": "^4.2.0",
+    "serve-favicon": "^2.5.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  }
+}
