@@ -3,18 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Game Library Collecting</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    
 </head>
 <body>
     
-    <h1>{{alert}}</h1>
-    
-    <form action="/login" method="POST">
-        <label for="username">Username</label><br>
-        <input name="username" type="text" id="username"><br>
-        <label for="password">Password:</label><br>
-        <input name="password" type="password" id="password"><br>
-        <input type="submit" value="Submit">
-    </form>
+
+    <div class="container">
+        <h1>Game Library Collecting</h1>
+        <div id="loginBlock" class="formContainer">
+            <h2>Log in as an existing user</h1>
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input name="username" type="text" id="username" required>
+                <label for="password">Password:</label>
+                <input name="password" type="password" id="password" required>
+                <input type="submit" value="Log In">
+            </form>
+            <h4 id="alert">{{alert}}</h4>
+        </div>
+
+
+        <div id="registerBlock" class="formContainer">
+            <h2>Create a new account</h1>
+            <form action="/register" method="POST" >
+                <label for="username">Username:</label>
+                <input name="username" type="text" id="username" required>
+                <label for="password">Password:</label>
+                <input name="password" type="password" id="password" required>
+                <input type="submit" value="Register">
+            </form>
+            <h4 id="alert">{{alert}}</h4>
+        </div>
+
+        
+        <div id="loginRegisterSelect" class="formContainer">
+            <p>or</p>
+            <button id="loginButton">Login as an existing user</button>
+            <button id="registerButton">Register for an account</button>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
 </body>
 </html>
