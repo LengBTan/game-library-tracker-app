@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/dashboard">Back</a>
+    </div>
+        
+    <table>
+        <tr>
+            <th>UserID:</th>
+            <th>Role:</th>
+        </tr>
+        {{#each users}} 
+        <tr>
+            <td>{{this.userid}}</td>
+            {{#if this.admin}}<!--admin property is either 1 or 0-->
+                <td>admin</td>
+            {{else}}
+                <td>guest</td>
+            {{/if}}
+        </tr>
+        {{/each}} 
+    </table>
+</body>
+</html>
