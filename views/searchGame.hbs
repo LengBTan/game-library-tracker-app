@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/dashboard">Back</a>
+    </div>
+    
+    <h1>{{alert}}</h1>
+    <form action="/searchGame" method="GET">
+        <label for="title">Game Title:</label><br>
+        <input type="text" name="title" id="title">
+        <input type="submit" value="Search">
+    </form>
+    <div class="tableScroll">
+        <table>
+            <tr>
+                <th>Add to library:</th>
+                <th>gameID:</th>
+                <th>Title:</th>
+                <th>Cover Art:</th>
+            </tr>
+            {{#each searchResult}}
+                <tr>
+                    <td><a href="/addGame/?id={{this.id}}" class="addButton">+</a></td>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td><img src="{{this.cover.url}}" alt="No cover art"></td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+    
+</body>
+</html>
