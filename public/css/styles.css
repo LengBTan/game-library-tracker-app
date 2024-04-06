@@ -1,0 +1,153 @@
+body{
+    background-color: rgb(42, 42, 42);
+    font-family: sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+#alert{
+    color: red;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    margin: 20%;
+    height: 50%;
+    padding: 50px;
+    align-items: center;
+    background-color:rgb(54, 54, 54);
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img{
+    width: 400px;
+}
+
+/*images in tables*/
+td > img{
+    width: 150px;
+    height: 200px;
+    object-fit:scale-down;
+}
+
+label{
+    font-size: 20pt;
+}
+
+input{
+    padding: 5px;
+    width: 300px;
+    margin: 10px;
+    border: none;
+    font-size:14pt;
+}
+
+input[type=submit]{
+    background-color: rgb(64, 123, 64);
+    color: white;
+    width: 300px;
+    border-radius: 4px;
+}
+
+button{
+    background-color:rgb(143, 143, 174);
+    color: white;
+    width: 350px;
+    padding: 10px;
+    border: 0;
+    border-radius: 4px;
+    font-size: 20pt;
+}
+
+.header{
+    background-color:rgb(54, 54, 54);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 1;
+}
+
+a{
+    color: rgb(183, 172, 229);
+    text-decoration: none;
+}
+
+.header > a{
+    color: white;
+    font-size: 20pt;
+    width: 100%;
+    text-align: center;
+}
+
+.header > a:hover {
+    background-color:rgb(71, 71, 71);
+}
+
+table{
+    background-color: rgb(109, 109, 109);
+    width: 100%;
+    margin: 30px 30px 30px 0;
+    text-align: center;
+    border: none;
+    border-collapse: collapse;
+    border-spacing: 50px 0;
+    table-layout: fixed;
+}
+
+th {
+    background-color: rgb(46, 46, 46);
+    text-align: center;
+    position: sticky;
+    top: 0;
+    font-size: 20px;
+    padding: 20px 0 20px 0;
+}
+
+td{
+    padding: 20px 0 20px 0;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(74, 74, 74);
+}
+
+td > a{
+    font-size: 20px;
+}
+
+td:last-child > a{
+    font-size: 25px;
+}
+
+tr > td:first-child > .addButton{
+    font-size: 70px;
+    color: white;
+}
+
+.tableScroll{
+    overflow: auto;
+    height: 80vh;
+}
+
+.coverAndInfo{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding-top: 20px;
+}
