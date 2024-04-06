@@ -33,15 +33,15 @@ exports.register = function(request,response){
     // console.log(username)
     // console.log(password)
 
-    let sql = `SELECT 1 from USERS where userid = '${username}';`
+    let sql = `SELECT 1 from USERS where userid = ?;`
 
-    db.all(sql, function(err,rows){
+    db.all(sql,[username], function(err,rows){
         if(rows.length){//userid already exists
             response.redirect('/index.html/?status=taken')
         }
         else{
-            sql = `INSERT INTO users VALUES ('${username}', '${password}', 0);`
-            db.run(sql)
+            sql = `INSERT INTO users VALUES (?, ?, 0);`
+            db.run(sql,[username, password])
             request.session.userId = username
             request.session.userRole = 0
 			request.session.save()
@@ -87,9 +87,8 @@ exports.dashboard = function(request, response){
     }
     let sql = `select user_game_list.userid, user_game_list.gameid, games.title,
             games.coverart from user_game_list join 
-            games on user_game_list.gameid = games.gameid where userid like 
-            '${request.session.userId}';`
-    db.all(sql , function(err, rows){
+            games on user_game_list.gameid = games.gameid where userid like ?;`
+    db.all(sql,[request.session.userId], function(err, rows){
         response.render('dashboard', {gameEntry:rows, users:userPageLink})
     })
 }
@@ -212,11 +211,11 @@ exports.addGame = function(request, response){
 	.then((data) => {//recieve the json data from the api
         let imgurl = data[0].cover.url.replace("t_thumb","t_720p")
 
-        let sql = `INSERT OR REPLACE INTO games VALUES (${data[0].id}, '${data[0].name}', '${imgurl}');`
-        db.run(sql)
+        let sql = `INSERT OR REPLACE INTO games VALUES (?, ?, ?);`
+        db.run(sql,[data[0].id, data[0].name, imgurl])
 
-        sql = `INSERT OR REPLACE INTO user_game_list VALUES ('${request.session.userId}',${data[0].id});`
-        db.run(sql)
+        sql = `INSERT OR REPLACE INTO user_game_list VALUES (?,?);`
+        db.run(sql, [request.session.userId, data[0].id])
         response.redirect('/dashboard')
 	})
 	.catch((error) => {
@@ -228,8 +227,8 @@ exports.deleteGame = function(request, response){
     let gameId = (request.query.id)
     console.log("deleting game with id: " + gameId)
 
-    sql = `DELETE FROM user_game_list WHERE userid = '${request.session.userId}' AND gameid = ${gameId};`
-    db.run(sql)
+    sql = `DELETE FROM user_game_list WHERE userid = ? AND gameid = ?;`
+    db.run(sql, [request.session.userId, gameId])
 
     //delete the game from the games table if it is not being referenced by any other users in user_game_list
     sql = `DELETE FROM games WHERE NOT EXISTS (SELECT 1 FROM user_game_list WHERE user_game_list.gameid = games.gameid);`
