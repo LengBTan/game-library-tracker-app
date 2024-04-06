@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game list</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/searchGame">Search Games</a>
+        {{{users}}}
+        <a href="/logout">log out</a>
+    </div>
+    
+    <table>
+        <tr>
+            <th>Game Title:</th>
+            <th>Game ID:</th>
+            <th>Cover Art</th>
+            <th>Remove</td>
+        </tr>
+        {{#each gameEntry}}
+            <tr>
+                <td><a href="game/{{this.gameid}}">{{this.title}}</a></td>
+                <td>{{this.gameid}}</td>
+                <td><img src="{{this.coverart}}"></td>
+                <td><a href="/deleteGame?id={{this.gameid}}">❌</a></td>
+            </tr>
+        {{/each}}
+    </table>
+
+</body>
+</html>
