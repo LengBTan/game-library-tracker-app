@@ -4,10 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    {{{cover}}}
-    <h1>{{title}}</h1>
-    <p>{{genre}}</p>
+    <div class="header">
+        <a href="/dashboard">Back</a>
+    </div>
+
+
+    <div class="coverAndInfo">
+        <img src="{{game.cover.url}}">
+
+        <div class="gameInfo">
+            <h1>Title: {{game.name}}</h1>
+            <h2>ID: {{game.id}}</h2>
+            <h2>Genre: {{game.genres}}</h2>
+        </div>
+    </div>
+    
+
+    
 </body>
 </html>
