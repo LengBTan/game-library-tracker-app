@@ -93,6 +93,7 @@ a{
     font-size: 20pt;
     width: 100%;
     text-align: center;
+    padding: 50px;
 }
 
 .header > a:hover {
