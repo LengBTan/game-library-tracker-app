@@ -21,6 +21,7 @@ h2{
     padding: 50px;
     align-items: center;
     background-color:rgb(54, 54, 54);
+    border-radius: 4px;
 }
 
 .formContainer{
@@ -49,6 +50,8 @@ td > img{
     object-fit:scale-down;
 }
 
+
+
 label{
     font-size: 20pt;
 }
@@ -58,6 +61,7 @@ input{
     width: 300px;
     margin: 10px;
     border: none;
+    border-radius: 4px;
     font-size:14pt;
 }
 
@@ -161,4 +165,28 @@ tr > td:first-child > .addButton{
     flex-direction: row;
     gap: 30px;
     padding-top: 20px;
+    align-self: center;
+}
+
+.similarGamesBox{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.gameAndTitle{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 20%;
+}
+
+.gameAndTitle > img {
+    width: 200px;
+    align-self: center;
+}
+
+.gameAndTitle > a{
+    text-wrap: pretty;
+    align-self: center;
 }
