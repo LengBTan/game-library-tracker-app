@@ -1,38 +1,38 @@
-var express = require('express')
-var path = require('path')
+const express = require('express')
+const path = require('path')
 const session = require('express-session')
 
-var app = express()
+const app = express()
 
 const PORT = process.env.PORT || 3000
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs') //use hbs handlebars wrapper
-app.locals.pretty = true; //to generate pretty view-source code in browser
+app.locals.pretty = true //to generate pretty view-source code in browser
 
 //read routes modules
-var routes = require('./routes/index');
+const routes = require('./routes/routes')
 
 //middleware
 
 app.use(express.json())//used to parse html post form
 app.use(express.urlencoded({extended: true}))//used to parse html post form
-app.use(express.static(path.join(__dirname, '/public')));//for js scripts and css
+app.use(express.static(path.join(__dirname, '/public')))//for js scripts and css
 
 
 const checkAuth = function(request, response, next){//middleware used to check if the user has an established session
     if (request.session.userId) {
-        next(); //user has a session established, continue with next middleware
+        next() //user has a session established, continue with next middleware
     }
 	else {
-        response.redirect('/index.html/?status=fail');//redirect user to the login page
+        response.redirect('/index.html/?status=fail')//redirect user to the login page
     }
 }
 
 const checkRole = function(request, response, next){//middleware used to check if the user is an admin
 	if(request.session.userRole){
-		next();
+		next()
 	}
 	else{
 		response.redirect('/dashboard')//redirect user to the dashboard
