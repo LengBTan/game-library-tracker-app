@@ -9,18 +9,31 @@
 <body>
     <div class="header">
         <h1>Game Library Collecting</h1>
-        <a href="/dashboard">Back</a>
+        <a href="/dashboard">↩ Back</a>
     </div>
 
 
     <div class="coverAndInfo">
-        <img src="{{game.cover.url}}">
+        <img src="{{game.cover.url}}" alt="No cover art">
 
         <div class="gameInfo">
             <h1>Title: {{game.name}}</h1>
             <h2>ID: {{game.id}}</h2>
             <h2>Genre: {{game.genres}}</h2>
+            <h2>Release Date: {{game.first_release_date}}</h2>
+            {{{addGame}}}
         </div>
+    </div>
+
+    <h2>Similar Games:</h2>
+
+    <div class="similarGamesBox">
+        {{#each game.similar_games}}
+            <div class="gameAndTitle">
+                <img src="{{this.cover.url}}" alt="No cover art">
+                <a href="./{{this.id}}">{{this.name}}</a>
+            </div>
+        {{/each}}
     </div>
     
 
