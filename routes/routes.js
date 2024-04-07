@@ -98,7 +98,7 @@ exports.dashboard = function(request, response){
 
     let userPageLink = ''
     if(request.session.userRole){
-        userPageLink = '<a href="/users">Users in the DB</a>'
+        userPageLink = '<a href="/users">👤 Users in the DB</a>'
     }
     let sql = `select user_game_list.userid, user_game_list.gameid, games.title,
             games.coverart from user_game_list join 
@@ -111,7 +111,6 @@ exports.dashboard = function(request, response){
 
 //client id and access token required to use the IGDB API
 //https://api-docs.igdb.com/?javascript#authentication
-//remember to change this if making the project public
 const CLIENT_ID = "pkr8ol36ywojvfk0q6pj9rbgcijmfp"
 const AUTH = "nnnm818tc77yk6arme7l8z2hi76r0p"
 //url of the api
