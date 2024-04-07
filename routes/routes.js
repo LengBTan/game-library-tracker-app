@@ -48,7 +48,7 @@ exports.register = function(request,response){
     let hash = crypto.scryptSync(password, salt, 64).toString('hex')//create a hash with the password and salt
 
 
-    let sql = `SELECT 1 from USERS where userid = ?;`
+    let sql = `SELECT 1 FROM users where userid = ?;`
 
     db.all(sql,[username], function(err,rows){
         if(rows.length){//userid already exists
@@ -94,8 +94,6 @@ function parseURL(request, response) {
 }
 
 exports.dashboard = function(request, response){
-    console.log("listing games in the collection")
-
     let userPageLink = ''
     if(request.session.userRole){
         userPageLink = '<a href="/users">👤 Users in the DB</a>'
@@ -127,9 +125,18 @@ exports.gameDetails = function(request, response){
     let gameId = urlObj.path
     gameId = gameId.substring(gameId.lastIndexOf("/") + 1, gameId.length)
     
+    let addGameTag = ''
+    //check if the game is in the list
+    let sql = "SELECT 1 FROM user_game_list WHERE userid = ? and gameid = ?"
+    db.all(sql, [request.session.userId, gameId], function(err, rows){
+        if(!rows.length){//game does not exists in the user's library
+            addGameTag = `<a href="/addGame/?id=${gameId}" class="addButton">Add Game to collection</a>`
+        }
+    })
+
     //https://api-docs.igdb.com/?javascript#game
 	//body for the api request
-	let body = `fields name, cover.*, genres.name, involved_companies.company.name, first_release_date; where id = ${gameId};`
+	let body = `fields name, cover.url, genres.name, involved_companies.company.name, first_release_date, similar_games.name, similar_games.cover.url; where id = ${gameId}; limit 20;`
 
 	const options = {
 		"method": "POST",
@@ -141,13 +148,15 @@ exports.gameDetails = function(request, response){
 	fetch(apiPath, options)
 	.then((response) => response.json())//recieve a response from the api
 	.then((data) => {//recieve the json data from the api
-		// console.log(data)
         data.forEach((game)=>{
             //change url to use larger image from the api
-            let imgurl = game.cover.url.replace("t_thumb","t_720p")
-            // console.log(imgurl)
-            game.cover.url=imgurl
-
+            if(game.hasOwnProperty('cover')){
+                let imgurl = game.cover.url.replace("t_thumb","t_720p")
+                game.cover.url=imgurl
+            }
+            else{
+                console.log(`Game ${game.id} has no cover art!`)
+            }
             //change genres to be a single string
             let genres = ''
             game.genres.forEach((genre)=>{
@@ -155,8 +164,33 @@ exports.gameDetails = function(request, response){
             })
             genres = genres.slice(0,-2)
             game.genres = genres
+
+            if(game.hasOwnProperty('first_release_date')){
+                let date = new Date(game.first_release_date*1000)//convert unix time
+                game.first_release_date = date.toISOString().split('T')[0]
+                console.log(game.first_release_date)
+            }
+            else{
+                game.first_release_date = 'n/a'
+            }
+            
+            if(game.hasOwnProperty('similar_games')){
+                game.similar_games.forEach((game)=>{
+                    if(game.hasOwnProperty('cover')){
+                        let imgurl = game.cover.url.replace("t_thumb","t_720p")
+                        game.cover.url=imgurl
+                    }
+                    else{
+                        console.log(`Game ${game.id} has no cover art!`)
+                    }
+                })
+
+
+            }
+            
+
         })
-        response.render('gameDetails', {game: data[0]})
+        response.render('gameDetails', {game: data[0], addGame:addGameTag})
 	})
 	.catch((error) => {
 		console.error(error)
@@ -223,7 +257,14 @@ exports.addGame = function(request, response){
 	fetch(apiPath, options)
 	.then((response) => response.json())//recieve a response from the api
 	.then((data) => {//recieve the json data from the api
-        let imgurl = data[0].cover.url.replace("t_thumb","t_720p")
+        let imgurl = ''
+        if(data[0].hasOwnProperty('cover')){
+            imgurl = data[0].cover.url.replace("t_thumb","t_720p")
+        }
+        else{
+            console.log(`Game ${data[0].id} has no cover art!`)
+        }
+        
 
         let sql = `INSERT OR REPLACE INTO games VALUES (?, ?, ?);`
         db.run(sql,[data[0].id, data[0].name, imgurl])
