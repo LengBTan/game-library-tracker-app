@@ -182,19 +182,13 @@ exports.gameDetails = function(request, response){
                         console.log(`Game ${game.id} has no cover art!`)
                     }
                 })
-
-
             }
-            
-
         })
         response.render('gameDetails', {game: data[0], addGame:addGameTag})
 	})
 	.catch((error) => {
 		console.error(error)
 	})
-
-    
 }
 
 exports.searchGame = function(request, response){
