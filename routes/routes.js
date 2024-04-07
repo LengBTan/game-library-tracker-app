@@ -168,7 +168,6 @@ exports.gameDetails = function(request, response){
             if(game.hasOwnProperty('first_release_date')){
                 let date = new Date(game.first_release_date*1000)//convert unix time
                 game.first_release_date = date.toISOString().split('T')[0]
-                console.log(game.first_release_date)
             }
             else{
                 game.first_release_date = 'n/a'
