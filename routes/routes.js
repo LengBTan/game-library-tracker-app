@@ -17,7 +17,6 @@ exports.login = function(request, response){
 	let authorized = false
     let userRole//store the user's role in the session
 
-
 	db.all("SELECT * FROM users where userid = ?", [username], function(err, rows){
 		for(let i=0; i<rows.length; i++){
             let salt = String(rows[i].salt)//retrieve the salt from the db
@@ -41,6 +40,7 @@ exports.login = function(request, response){
 }
 
 exports.register = function(request,response){
+    console.log("Registering user")
     const {username, password} = request.body
 
     let salt = crypto.randomBytes(16).toString('hex')//generate a random salt
@@ -63,8 +63,6 @@ exports.register = function(request,response){
 			response.redirect('/dashboard')
         }
     })
-
-    
 }
 
 exports.index = function (request, response){
@@ -198,9 +196,8 @@ exports.gameDetails = function(request, response){
     
 }
 
-
 exports.searchGame = function(request, response){
-    let game = (request.query.title)//.split(' ').join('+')
+    let game = (request.query.title)
 	if(!game) {//dont search an empty string
 	  response.render('searchGame')
 	  return
@@ -264,7 +261,6 @@ exports.addGame = function(request, response){
             console.log(`Game ${data[0].id} has no cover art!`)
         }
         
-
         let sql = `INSERT OR REPLACE INTO games VALUES (?, ?, ?);`
         db.run(sql,[data[0].id, data[0].name, imgurl])
 
