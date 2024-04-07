@@ -10,6 +10,8 @@ db.serialize(() =>{
     db.run(sql)
     sql = "CREATE TABLE IF NOT EXISTS user_game_list (userid TEXT, gameid INTEGER);"
     db.run(sql)
+    sql = "INSERT OR REPLACE INTO users VALUES ('admin','745731af4484f323968969eda289aeee005b5903ac561e64a5aca121797bf7734ef9fd58422e2e22183bcacba9ec87ba0c83b7a2e788f03ce0da06463433cda6',1,'salt');"
+    db.run(sql)
 })
 
 exports.login = function(request, response){
