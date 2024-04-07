@@ -1,21 +1,33 @@
-var sqlite3 = require('sqlite3').verbose(); //verbose provides more detailed stack trace
-var db = new sqlite3.Database('data/projectDB');
+const sqlite3 = require('sqlite3').verbose() //verbose provides more detailed stack trace
+const db = new sqlite3.Database('data/projectDB')
 const url = require('url')
+const crypto = require('crypto')
+
+db.serialize(() =>{
+    let sql = "CREATE TABLE IF NOT EXISTS games (gameid INTEGER PRIMARY KEY, title TEXT, coverart TEXT);"
+    db.run(sql)
+    sql = "CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, password TEXT, admin BOOLEAN, salt TEXT);"
+    db.run(sql)
+    sql = "CREATE TABLE IF NOT EXISTS user_game_list (userid TEXT, gameid INTEGER);"
+    db.run(sql)
+})
 
 exports.login = function(request, response){
-	const {username, password} = request.body;
+	const {username, password} = request.body
+	let authorized = false
+    let userRole//store the user's role in the session
 
-	let authorized = false;
-    let userRole;//store the user's role in the session
 
-	db.all("SELECT * FROM users", function(err, rows){
-		for(var i=0; i<rows.length; i++){
-		    if(rows[i].userid == username && rows[i].password == password){
-				authorized = true;
-                userRole = rows[i].admin;//boolean if user is admin
+	db.all("SELECT * FROM users where userid = ?", [username], function(err, rows){
+		for(let i=0; i<rows.length; i++){
+            let salt = String(rows[i].salt)//retrieve the salt from the db
+            let hash = crypto.scryptSync(password, salt, 64).toString('hex')//compute the hash
+		    if(rows[i].userid == username && rows[i].password == hash){//check if the username and hash of the password+salt matches data in db
+				authorized = true
+                userRole = rows[i].admin//boolean if user is admin
 			} 
 		}
-		if(authorized){
+		if(authorized){//create this session
 			console.log("establishing a session")
 			request.session.userId = username
             request.session.userRole = userRole
@@ -29,9 +41,12 @@ exports.login = function(request, response){
 }
 
 exports.register = function(request,response){
-    const {username, password} = request.body;
-    // console.log(username)
-    // console.log(password)
+    const {username, password} = request.body
+
+    let salt = crypto.randomBytes(16).toString('hex')//generate a random salt
+    
+    let hash = crypto.scryptSync(password, salt, 64).toString('hex')//create a hash with the password and salt
+
 
     let sql = `SELECT 1 from USERS where userid = ?;`
 
@@ -40,8 +55,8 @@ exports.register = function(request,response){
             response.redirect('/index.html/?status=taken')
         }
         else{
-            sql = `INSERT INTO users VALUES (?, ?, 0);`
-            db.run(sql,[username, password])
+            sql = `INSERT INTO users VALUES (?, ?, 0, ?);`
+            db.run(sql,[username, hash, salt])//store the username, hash and salt
             request.session.userId = username
             request.session.userRole = 0
 			request.session.save()
@@ -68,7 +83,7 @@ exports.index = function (request, response){
         message = 'Username is taken'
     }
 
-	response.render('index', {alert: message});
+	response.render('index', {alert: message})
 }
 
 function parseURL(request, response) {
@@ -104,7 +119,7 @@ const apiPath = "https://api.igdb.com/v4/games"
 //set the header for the request, required by the api
 let headers = new Headers()
 headers.append("Client-ID", CLIENT_ID)
-headers.append("Authorization", `Bearer ${AUTH}`);
+headers.append("Authorization", `Bearer ${AUTH}`)
 
 exports.gameDetails = function(request, response){
     //extract the gameid from the url
@@ -185,7 +200,7 @@ exports.searchGame = function(request, response){
                 console.log(`Game ${game.id} has no cover art!`)
             }
         })
-        response.render('searchGame', {searchResult:data});
+        response.render('searchGame', {searchResult:data})
 	})
 	.catch((error) => {
 		console.error(error)
