@@ -15,7 +15,6 @@ app.locals.pretty = true //to generate pretty view-source code in browser
 const routes = require('./routes/routes')
 
 //middleware
-
 app.use(express.json())//used to parse html post form
 app.use(express.urlencoded({extended: true}))//used to parse html post form
 app.use(express.static(path.join(__dirname, '/public')))//for js scripts and css
@@ -51,7 +50,7 @@ app.post('/login', routes.login)
 app.post('/register',routes.register)
 app.get(['/','/index.html'], routes.index)
 app.get('/dashboard', checkAuth, routes.dashboard)
-app.get('/users', checkAuth, checkRole, routes.users)//checkRole implies checkAuth
+app.get('/users', checkAuth, checkRole, routes.users)
 app.get('/game/*', checkAuth, routes.gameDetails)
 app.get('/searchGame', checkAuth, routes.searchGame)
 app.get('/deleteGame', checkAuth, routes.deleteGame)
@@ -73,6 +72,7 @@ app.listen(PORT, err => {
 		console.log(`Server listening on port: ${PORT} CNTL:-C to stop`)
 		console.log(`To Test:`)
 		console.log('user: admin password: password')
+		console.log('http://localhost:3000/')
 		console.log('http://localhost:3000/index.html')
 	}
 })
