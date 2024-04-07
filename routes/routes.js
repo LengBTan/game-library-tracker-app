@@ -119,7 +119,6 @@ headers.append("Authorization", `Bearer ${AUTH}`)
 exports.gameDetails = function(request, response){
     //extract the gameid from the url
     let urlObj = parseURL(request, response)
-    // console.log(urlObj)
     let gameId = urlObj.path
     gameId = gameId.substring(gameId.lastIndexOf("/") + 1, gameId.length)
     
@@ -217,10 +216,8 @@ exports.searchGame = function(request, response){
 	fetch(apiPath, options)
 	.then((response) => response.json())//recieve a response from the api
 	.then((data) => {//recieve the json data from the api
-		// console.log(data)
         data.forEach((game)=>{
             //change url to use larger image from the api
-            //console.log(game)
             if(game.hasOwnProperty('cover')){
                 let imgurl = game.cover.url.replace("t_thumb","t_720p")
                 game.cover.url=imgurl
