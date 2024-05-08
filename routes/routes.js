@@ -109,8 +109,8 @@ exports.dashboard = function(request, response){
 
 //client id and access token required to use the IGDB API
 //https://api-docs.igdb.com/?javascript#authentication
-const CLIENT_ID = "pkr8ol36ywojvfk0q6pj9rbgcijmfp"
-const AUTH = "nnnm818tc77yk6arme7l8z2hi76r0p"
+const CLIENT_ID = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+const AUTH = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 //url of the api
 const apiPath = "https://api.igdb.com/v4/games"
 //set the header for the request, required by the api
